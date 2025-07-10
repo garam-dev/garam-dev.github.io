@@ -33,14 +33,13 @@
   #comments-list .comment-content { margin-top: 5px; }
 </style>
 
-<script type="module">
+<script>
   const SUPABASE_URL = '{{ site.supabase.url }}';
   const SUPABASE_KEY = '{{ site.supabase.key }}';
   const postSlug = '{{ page.path | slugify }}';
 
-  // Supabase 클라이언트 라이브러리 동적 로드
-  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  // Supabase 클라이언트 라이브러리 사용
+  const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const commentsList = document.getElementById('comments-list');
   const noCommentsMessage = document.getElementById('no-comments');
