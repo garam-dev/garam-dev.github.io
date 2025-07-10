@@ -1,5 +1,5 @@
 <script>
   window.SUPABASE_URL = '{{ site.supabase.url }}';
   window.SUPABASE_KEY = '{{ site.supabase.key }}';
-  window.supabase = Supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+  window.supabase = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 </script>
