@@ -33,7 +33,8 @@
   #comments-list .comment-content { margin-top: 5px; }
 </style>
 
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script defer>
   document.addEventListener('DOMContentLoaded', async () => {
     const SUPABASE_URL = '{{ site.supabase.url }}';
     const SUPABASE_KEY = '{{ site.supabase.key }}';
