@@ -59,13 +59,7 @@ layout: default
       {% include post_pagination.html %}
     </div>
 
-    {% comment %} Supabase Comments Start {% endcomment %}
-    {% if page.comments %}
-      {% include supabase_comments.html %}
-    {% endif %}
-    {% comment %} Supabase Comments End {% endcomment %}
-
-  </article>
+    </article>
 
   {% comment %}<!-- only show related posts if `related: true` is enabled -->{% endcomment %}
   {% if page.related == true %}
