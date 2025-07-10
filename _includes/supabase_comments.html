@@ -1,0 +1,120 @@
+<div id="comments-section">
+  <h3>댓글</h3>
+  
+  <!-- 댓글 작성 폼 -->
+  <form id="comment-form">
+    <div class="form-group">
+      <label for="comment-author">이름</label>
+      <input type="text" id="comment-author" name="author" required>
+    </div>
+    <div class="form-group">
+      <label for="comment-content">내용</label>
+      <textarea id="comment-content" name="content" rows="4" required></textarea>
+    </div>
+    <button type="submit" id="submit-comment">댓글 등록</button>
+  </form>
+
+  <!-- 댓글 목록 -->
+  <div id="comments-list"></div>
+  <p id="no-comments" style="display: none;">아직 댓글이 없습니다. 첫 댓글을 남겨주세요!</p>
+</div>
+
+<style>
+  #comments-section { margin-top: 40px; }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; margin-bottom: 5px; }
+  .form-group input, .form-group textarea { width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+  #submit-comment { padding: 10px 15px; border: none; background-color: #007bff; color: white; border-radius: 4px; cursor: pointer; }
+  #submit-comment:disabled { background-color: #ccc; }
+  #comments-list .comment { border-bottom: 1px solid #eee; padding: 15px 0; }
+  #comments-list .comment:last-child { border-bottom: none; }
+  #comments-list .comment-author { font-weight: bold; }
+  #comments-list .comment-date { color: #888; font-size: 0.9em; margin-left: 10px; }
+  #comments-list .comment-content { margin-top: 5px; }
+</style>
+
+<script type="module">
+  const SUPABASE_URL = '{{ site.supabase.url }}';
+  const SUPABASE_KEY = '{{ site.supabase.key }}';
+  const postSlug = '{{ page.path | slugify }}';
+
+  // Supabase 클라이언트 라이브러리 동적 로드
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const commentsList = document.getElementById('comments-list');
+  const noCommentsMessage = document.getElementById('no-comments');
+  const commentForm = document.getElementById('comment-form');
+  const submitButton = document.getElementById('submit-comment');
+
+  // 댓글 불러오기
+  async function fetchComments() {
+    const { data, error } = await supabase
+      .from('comments')
+      .select('*')
+      .eq('post_slug', postSlug)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching comments:', error);
+      return;
+    }
+
+    if (data.length === 0) {
+        noCommentsMessage.style.display = 'block';
+    } else {
+        noCommentsMessage.style.display = 'none';
+    }
+
+    commentsList.innerHTML = '';
+    data.forEach(comment => {
+      const commentEl = document.createElement('div');
+      commentEl.classList.add('comment');
+      commentEl.innerHTML = `
+        <div>
+          <span class="comment-author">${escapeHtml(comment.author)}</span>
+          <span class="comment-date">${new Date(comment.created_at).toLocaleString()}</span>
+        </div>
+        <div class="comment-content">${escapeHtml(comment.content)}</div>
+      `;
+      commentsList.appendChild(commentEl);
+    });
+  }
+
+  // 댓글 등록하기
+  commentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitButton.disabled = true;
+    submitButton.innerText = '등록 중...';
+
+    const author = document.getElementById('comment-author').value;
+    const content = document.getElementById('comment-content').value;
+
+    const { error } = await supabase
+      .from('comments')
+      .insert([{ post_slug: postSlug, author, content }]);
+
+    if (error) {
+      console.error('Error posting comment:', error);
+      alert('댓글 등록에 실패했습니다.');
+    } else {
+      commentForm.reset();
+      fetchComments(); // 새 댓글 포함해서 다시 불러오기
+    }
+    submitButton.disabled = false;
+    submitButton.innerText = '댓글 등록';
+  });
+
+  // HTML 태그를 안전하게 표시하기 위한 함수
+  function escapeHtml(unsafe) {
+      return unsafe
+           .replace(/&/g, "&amp;")
+           .replace(/</g, "&lt;")
+           .replace(/>/g, "&gt;")
+           .replace(/"/g, "&quot;")
+           .replace(/'/g, "&#039;");
+   }
+
+  // 페이지 로드 시 댓글 불러오기
+  fetchComments();
+</script>

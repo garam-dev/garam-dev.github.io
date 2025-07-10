@@ -22,6 +22,12 @@ title: "Garam-Dev의 개발 블로그"
 description: "배우고 성장하는 과정을 기록합니다."
 url: "https://garam-dev.github.io"
 
+# Skin
+minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+
+# Search
+search: true
+
 # Minimal Mistakes Plugins
 plugins:
   - jekyll-paginate
@@ -69,3 +75,8 @@ defaults:
     values:
       layout: single
       author_profile: true
+
+# Supabase Comments settings
+supabase:
+  url: "https://bnvrbmsmjqbguwyixsum.supabase.co"
+  key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJudnJibXNtanFiZ3V3eWl4c3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxMzI2NTYsImV4cCI6MjA2NzcwODY1Nn0.jCMqRociGCQwKUZ09DYWwzhelt4fVGAItj2jcXHiIJY"
