@@ -14,6 +14,8 @@ layout: default
   {% endunless %}
 {% endif %}
 
+{% include supabase_init.html %}
+
 <div id="main" role="main">
   {% include sidebar.html %}
 
@@ -73,3 +75,7 @@ layout: default
     </div>
   {% endif %}
 </div>
+
+{% if page.comments %}
+  {% include supabase_comments.html %}
+{% endif %}

@@ -33,15 +33,11 @@
   #comments-list .comment-content { margin-top: 5px; }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-<script defer>
+<script>
   document.addEventListener('DOMContentLoaded', async () => {
-    const SUPABASE_URL = '{{ site.supabase.url }}';
-    const SUPABASE_KEY = '{{ site.supabase.key }}';
+    // Supabase 클라이언트가 이미 전역 변수 window.supabase로 초기화되어 있다고 가정
+    const supabase = window.supabase;
     const postSlug = '{{ page.path | slugify }}';
-
-    // Supabase 클라이언트 라이브러리 사용
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const commentsList = document.getElementById('comments-list');
     const noCommentsMessage = document.getElementById('no-comments');
