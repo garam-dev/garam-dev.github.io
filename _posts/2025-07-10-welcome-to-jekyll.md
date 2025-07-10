@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: single
 title:  "첫 포스트에 오신 것을 환영합니다"
 date:   2025-07-10 15:30:00 +0900
 categories: jekyll update
