@@ -19,7 +19,7 @@ remote_theme: mmistakes/minimal-mistakes@4.24.0
 
 # Site title, url, and description
 title: "Development Blog"
-subtitle: "👨‍💻"
+# subtitle: "👨‍💻"
 description: "배우고 성장하는 과정을 기록합니다."
 url: ""
 

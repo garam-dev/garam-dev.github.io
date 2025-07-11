@@ -1,10 +1,12 @@
 # main links
 main:
-  - title: "About"
+  - title: "👤"
     url: /about/
-  - title: "Posts"
+  - title: "📝"
     url: /year-archive/
-  - title: "Categories"
+  - title: "🗂️"
     url: /categories/
-  - title: "Tags"
+  - title: "🔖"
     url: /tags/
+  - title: "Archives"
+    url: /archives/
