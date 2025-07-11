@@ -4,6 +4,14 @@
 .page__title a { text-decoration: none !important; }
 /* 게시물 공유 버튼 숨기기 */
 .page__share { display: none !important; }
+/* 헤더 고정하여 스크롤 시에도 최상단에 노출 */
+.masthead { position: fixed !important; top: 0; left: 0; width: 100%; z-index: 1000; }
+.masthead,
+.greedy-nav { background-color: white !important; }
+/* 본문 및 검색 컨텐츠 아래로 밀어 헤더 자리 확보 */
+.initial-content, .search-content { margin-top: 5em !important; }
+/* author_profile(사이드바) 스크롤 시 뷰포트에 고정 */
+.sidebar.sticky { position: sticky !important; top: 5em !important; }
 .page__date {padding-bottom: 32px!important; margin-bottom: 16px !important; border-bottom: rgb(242, 243, 243) solid 1px !important;}
 </style>
 
