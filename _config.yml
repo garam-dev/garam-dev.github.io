@@ -18,12 +18,13 @@
 remote_theme: mmistakes/minimal-mistakes@4.24.0
 
 # Site title, url, and description
-title: "Garam-Dev의 개발 블로그"
+title: "Development Blog"
+subtitle: "👨‍💻"
 description: "배우고 성장하는 과정을 기록합니다."
-url: "https://garam-dev.github.io"
+url: ""
 
 # Skin
-minimal_mistakes_skin: "dark" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin: "" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Search
 search: true
@@ -39,17 +40,17 @@ plugins:
 
 # Author settings
 author:
-  name: "Garam-Dev"
+  name: "A Developer"
   avatar: "/assets/images/my_profile.png" # 여기에 실제 프로필 사진 경로를 지정하세요.
-  bio: "안녕하세요! 배우고 성장하는 과정을 기록하는 개발자 Garam-Dev입니다. 웹 개발, 클라우드, 알고리즘 등 다양한 기술 주제를 다룹니다."
+  bio: "Writing code, solving problems, and learning along the way."
   location: "Seoul, South Korea"
-  links:
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/garam-dev"
-    - label: "LinkedIn" # 예시: LinkedIn 추가
-      icon: "fab fa-fw fa-linkedin"
-      url: "https://www.linkedin.com/in/your-linkedin-profile/" # 본인의 LinkedIn 프로필 URL로 변경하세요.
+  # links:
+  #   - label: "GitHub"
+  #     icon: "fab fa-fw fa-github"
+  #     url: "https://github.com/garam-dev"
+  #   - label: "LinkedIn" # 예시: LinkedIn 추가
+  #     icon: "fab fa-fw fa-linkedin"
+  #     url: "https://www.linkedin.com/in/your-linkedin-profile/" # 본인의 LinkedIn 프로필 URL로 변경하세요.
 
 # Footer settings
 footer:
@@ -83,3 +84,6 @@ defaults:
 supabase:
   url: "https://bnvrbmsmjqbguwyixsum.supabase.co"
   key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJudnJibXNtanFiZ3V3eWl4c3VtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIxMzI2NTYsImV4cCI6MjA2NzcwODY1Nn0.jCMqRociGCQwKUZ09DYWwzhelt4fVGAItj2jcXHiIJY"
+
+# Repository
+repository: garam-dev/garam-dev.github.io
