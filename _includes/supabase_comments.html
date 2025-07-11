@@ -1,22 +1,24 @@
 <div id="comments-section">
   <h3>댓글</h3>
-  
-  <!-- 댓글 작성 폼 -->
-  <form id="comment-form">
-    <div class="form-group">
-      <label for="comment-author">이름</label>
-      <input type="text" id="comment-author" name="author" required>
-    </div>
-    <div class="form-group">
-      <label for="comment-content">내용</label>
-      <textarea id="comment-content" name="content" rows="4" required></textarea>
-    </div>
-    <button type="submit" id="submit-comment">댓글 등록</button>
-  </form>
 
-  <!-- 댓글 목록 -->
-  <div id="comments-list"></div>
-  <p id="no-comments" style="display: none;">아직 댓글이 없습니다. 첫 댓글을 남겨주세요!</p>
+<!-- 댓글 목록 -->
+<div id="comments-list"></div>
+<p id="no-comments" style="display: none;">아직 댓글이 없습니다. 첫 댓글을 남겨주세요!</p>
+<!-- 댓글 페이지네이션 -->
+<div id="comments-pagination"></div>
+
+<!-- 댓글 작성 폼 -->
+<form id="comment-form">
+  <div class="form-group">
+    <label for="comment-author">이름</label>
+    <input type="text" id="comment-author" name="author" required>
+  </div>
+  <div class="form-group">
+    <label for="comment-content">내용</label>
+    <textarea id="comment-content" name="content" rows="4" required></textarea>
+  </div>
+  <button type="submit" id="submit-comment">댓글 등록</button>
+</form>
 </div>
 
 <style>
@@ -33,39 +35,54 @@
   #comments-list .comment-date { color: #888; font-size: 0.9em; margin-left: 10px; }
   #comments-list .comment-content { margin-top: 5px; }
 </style>
+<style>
+  /* 댓글 페이지네이션 버튼 스타일 */
+  #comments-pagination { margin: 10px 0; text-align: center; }
+  #comments-pagination button { margin: 0 5px; padding: 4px 8px; font-size: 0.9em; border: 1px solid #ccc; background: #f8f9fa; cursor: pointer; }
+  #comments-pagination span { margin: 0 5px; font-size: 0.9em; color: #666; }
+</style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', async () => {
-    // Supabase 클라이언트가 이미 전역 변수 window.supabase로 초기화되어 있다고 가정
-    const supabase = window.supabase;
-    const postSlug = '{{ page.path | slugify }}';
+document.addEventListener('DOMContentLoaded', () => {
+  const supabase = window.supabase;
+  const postSlug = '{{ page.path | slugify }}';
 
-    const commentsList = document.getElementById('comments-list');
-    const noCommentsMessage = document.getElementById('no-comments');
-    const commentForm = document.getElementById('comment-form');
-    const submitButton = document.getElementById('submit-comment');
+  const commentsList = document.getElementById('comments-list');
+  const paginationEl = document.getElementById('comments-pagination');
+  const noCommentsMessage = document.getElementById('no-comments');
+  const commentForm = document.getElementById('comment-form');
+  const submitButton = document.getElementById('submit-comment');
 
-    // 댓글 불러오기
-    async function fetchComments() {
-      const { data, error } = await supabase
-        .from('comments')
-        .select('*')
-        .eq('post_slug', postSlug)
-        .order('created_at', { ascending: false });
+  const pageSize = 5;
+  let currentPage = 1;
+  let allComments = [];
 
-      if (error) {
-        console.error('Error fetching comments:', error);
-        return;
-      }
+  async function fetchComments() {
+    const { data, error } = await supabase
+      .from('comments')
+      .select('*')
+      .eq('post_slug', postSlug)
+      .order('created_at', { ascending: false });
 
-      if (data.length === 0) {
-          noCommentsMessage.style.display = 'block';
-      } else {
-          noCommentsMessage.style.display = 'none';
-      }
+    if (error) {
+      console.error('Error fetching comments:', error);
+      return;
+    }
 
-      commentsList.innerHTML = '';
-      data.forEach(comment => {
+    allComments = data;
+    currentPage = 1;
+    renderCommentsPage();
+  }
+
+  function renderCommentsPage() {
+    commentsList.innerHTML = '';
+    if (allComments.length === 0) {
+      noCommentsMessage.style.display = 'block';
+    } else {
+      noCommentsMessage.style.display = 'none';
+      const start = (currentPage - 1) * pageSize;
+      const pageComments = allComments.slice(start, start + pageSize);
+      pageComments.forEach(comment => {
         const commentEl = document.createElement('div');
         commentEl.classList.add('comment');
         commentEl.innerHTML = `
@@ -78,42 +95,65 @@
         commentsList.appendChild(commentEl);
       });
     }
+    renderPagination();
+  }
 
-    // 댓글 등록하기
-    commentForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      submitButton.disabled = true;
-      submitButton.innerText = '등록 중...';
+  function renderPagination() {
+    paginationEl.innerHTML = '';
+    const totalPages = Math.ceil(allComments.length / pageSize);
+    if (totalPages <= 1) return;
 
-      const author = document.getElementById('comment-author').value;
-      const content = document.getElementById('comment-content').value;
+    if (currentPage > 1) {
+      const prevBtn = document.createElement('button');
+      prevBtn.textContent = '« 이전';
+      prevBtn.addEventListener('click', () => { currentPage--; renderCommentsPage(); });
+      paginationEl.appendChild(prevBtn);
+    }
 
-      const { error } = await supabase
-        .from('comments')
-        .insert([{ post_slug: postSlug, author, content }]);
+    const info = document.createElement('span');
+    info.textContent = `${currentPage} / ${totalPages}`;
+    paginationEl.appendChild(info);
 
-      if (error) {
-        console.error('Error posting comment:', error);
-        alert('댓글 등록에 실패했습니다.');
-      } else {
-        commentForm.reset();
-        fetchComments(); // 새 댓글 포함해서 다시 불러오기
-      }
-      submitButton.disabled = false;
-      submitButton.innerText = '댓글 등록';
-    });
+    if (currentPage < totalPages) {
+      const nextBtn = document.createElement('button');
+      nextBtn.textContent = '다음 »';
+      nextBtn.addEventListener('click', () => { currentPage++; renderCommentsPage(); });
+      paginationEl.appendChild(nextBtn);
+    }
+  }
 
-    // HTML 태그를 안전하게 표시하기 위한 함수
-    function escapeHtml(unsafe) {
-        return unsafe
-             .replace(/&/g, "&amp;")
-             .replace(/</g, "&lt;")
-             .replace(/>/g, "&gt;")
-             .replace(/"/g, "&quot;")
-             .replace(/'/g, "&#039;");
-     }
+  commentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitButton.disabled = true;
+    submitButton.innerText = '등록 중...';
 
-    // 페이지 로드 시 댓글 불러오기
-    fetchComments();
+    const author = document.getElementById('comment-author').value;
+    const content = document.getElementById('comment-content').value;
+
+    const { error } = await supabase
+      .from('comments')
+      .insert([{ post_slug: postSlug, author, content }]);
+
+    if (error) {
+      console.error('Error posting comment:', error);
+      alert('댓글 등록에 실패했습니다.');
+    } else {
+      commentForm.reset();
+      fetchComments();
+    }
+    submitButton.disabled = false;
+    submitButton.innerText = '댓글 등록';
   });
+
+  function escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  fetchComments();
+});
 </script>
