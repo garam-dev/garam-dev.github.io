@@ -18,10 +18,11 @@
 remote_theme: mmistakes/minimal-mistakes@4.24.0
 
 # Site title, url, and description
-title: "Development Blog"
+title: "HELLO DEV"
 # subtitle: "👨‍💻"
 description: "배우고 성장하는 과정을 기록합니다."
-url: ""
+url: "https://garam-dev.github.io"
+baseurl: ""
 
 # Skin
 minimal_mistakes_skin: "" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
