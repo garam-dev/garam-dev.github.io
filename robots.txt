@@ -1,0 +1,7 @@
+---
+---
+# Allow all crawlers full access and point them to the sitemap
+User-agent: *
+Allow: /
+
+Sitemap: {{ site.url }}{{ site.baseurl }}/sitemap.xml
