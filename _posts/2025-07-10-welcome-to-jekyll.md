@@ -11,9 +11,7 @@ categories: jekyll update
 
 ```python
 def hello_world():
-    print("Hello, Jekyll!")
+    print("HELLO, DEV!")
 
 hello_world()
 ```
-
-앞으로 이곳에 멋진 글들을 채워나갈 예정입니다.

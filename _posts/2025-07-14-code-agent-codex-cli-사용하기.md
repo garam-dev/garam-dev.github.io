@@ -232,6 +232,6 @@ pause
 
 -----
 
-*게시일: 2025-07-14*
-*작성: A Developer*
-*태그: ai, 개발, openai, gpt, coding, cli, wsl, nodejs, agent*
+*게시일: 2025-07-14*<br>
+*작성: A Developer*<br>
+*태그: ai, 개발, openai, gpt, coding, cli, wsl, nodejs, agent*<br>
